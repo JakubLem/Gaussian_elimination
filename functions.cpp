@@ -6,23 +6,23 @@
 #include <iostream>
 using namespace std;
 
-void randomMATRIX(int ** matrix, int len){
+void randomMATRIX(double ** matrix, int len){
     srand( time( NULL ) );
     for(int i = 0 ; i < len ; i++){
-        matrix[i] = new int[len];
+        matrix[i] = new double[len];
         for(int j = 0 ; j < len ; j++){
             matrix[i][j] = (rand() % 10) + 1;
         }
     }
 }
 
-void randomRESULT(int * tab, int len){
+void randomRESULT(double * tab, int len){
     for(int i = 0 ; i < len ; i++){
         tab[i] = (rand() % 10) + 1;
     }
 }
 
-void writeMATRIX(int ** matrix, int len){
+void writeMATRIX(double ** matrix, int len){
     for(int i = 0 ; i <len ; i++){
         for(int j = 0 ; j<len ; j++){
             cout<<matrix[i][j]<<" ";
@@ -31,11 +31,31 @@ void writeMATRIX(int ** matrix, int len){
     }
 }
 
-void calculate(int ** matrix, int len){
+void calculate(double ** matrix, int len){
+    double scaler;
+    cout<<"START"<<endl;
+    int stop = len -1;
+    for(int i = 0 ; i < stop ; i++){
+        for(int j = i + 1 ; j < len - i ; j++){
+            if(matrix[i][i]!=1){
+                scaler = matrix[i][i];
+                for(int y = i ; y < len ; y++){
+                    matrix[y][j] /= scaler;
+                }
+                writeMATRIX(matrix, len);
+            }
+            scaler = (-1*matrix[i][i])/matrix[i][j];
+            for(int y = j ; y < len ; y++){
+                matrix[j][y] = scaler * matrix[j][i] + matrix[i][i];
+            }
+            writeMATRIX(matrix, len);
 
+        }
+        cout<< endl;
+    }
 }
 
-void finishApp(int ** matrix, int * res,int len){
+void finishApp(double ** matrix, double * res,int len){
     //destroy matrix
     for(int i = 0 ; i < len ; i++){
         delete [] matrix[i];
@@ -50,11 +70,14 @@ void startApp(){
     system("cls");
     cout<<"enter number of elements: ";
     cin>>noe;
-    int  ** matrix = new int * [noe];
-    int * results = new int[noe];
+    double  ** matrix = new double * [noe];
+    double * results = new double[noe];
     randomRESULT(results, noe);
     randomMATRIX(matrix, noe);
     //write
     writeMATRIX(matrix, noe);
+
+    calculate(matrix, noe);
+
     finishApp(matrix, results, noe);
 }

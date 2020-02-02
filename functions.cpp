@@ -34,6 +34,15 @@ void writeMATRIX(double ** matrix, double * results, int len){
     cout<<endl;
 }
 
+void printRESULTS(double * tab, int len){
+    cout<<endl<<"-----------------------------------------------"<<endl;
+    cout<<endl<<"RESULTS: "<<endl;
+    for(int i = 0 ; i < len ; i++){
+        cout<<"x"<<i+1<<" = "<<tab[i]<<endl;
+    }
+    cout<<endl<<"-----------------------------------------------"<<endl;
+}
+
 void calculate(double ** matrix, double * results,int len){
     double scaler;
     //cout<<"START"<<endl;
@@ -47,7 +56,7 @@ void calculate(double ** matrix, double * results,int len){
                 matrix[i][y] /= scaler;
             }
             results[i]/=scaler;
-            //writeMATRIX(matrix, len);
+            //writeMATRIX(matrix, results, len);
         }
         for(int j = i + 1  ; j < len ; j++){
             //cout<<endl<<"taki tam for "<<j<<endl;
@@ -57,17 +66,17 @@ void calculate(double ** matrix, double * results,int len){
             for(int y = i ; y < len ; y++){
                 //cout<<endl<<"Ostatni for j y = "<<matrix[j][y]<<endl;
                 matrix[j][y] = scaler * matrix[i][y] + matrix[j][i];
-                //writeMATRIX(matrix, len);
+                //writeMATRIX(matrix, results, len);
             }
             results[i] = scaler * results[0] + results[i];
-            //writeMATRIX(matrix, len);
+            //writeMATRIX(matrix, results, len);
 
         }
         //writeMATRIX(matrix, results, len);
         //cout<< endl;
     }
     //---------- znajdowanie rozwiązan
-    writeMATRIX(matrix, results,len);
+    //writeMATRIX(matrix, results,len);
     double search;
     for(int i = len - 2 ; i >= 0 ; i--){
         search = 0;
@@ -93,7 +102,7 @@ void finishApp(double ** matrix, double * res,int len){
     }
     delete [] matrix;
     delete [] res;
-    cout<<"hello";
+    cout<<"//DONE";
 
 }
 
@@ -110,6 +119,8 @@ void startApp(){
     randomMATRIX(matrix, noe);
     writeMATRIX(matrix, results, noe);
     calculate(matrix, results, noe);
+    cout<<endl<<"DONE"<<endl;
     writeMATRIX(matrix, results, noe);
+    printRESULTS(results, noe);
     finishApp(matrix, results, noe);
 }

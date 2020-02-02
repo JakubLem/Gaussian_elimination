@@ -23,6 +23,7 @@ void randomRESULT(double * tab, int len){
 }
 
 void writeMATRIX(double ** matrix, double * results, int len){
+    cout<<endl;
     for(int i = 0 ; i <len ; i++){
         for(int j = 0 ; j<len ; j++){
             cout<<matrix[i][j]<<" ";
@@ -30,17 +31,18 @@ void writeMATRIX(double ** matrix, double * results, int len){
         cout<<" | "<<results[i];
         cout<<endl;
     }
+    cout<<endl;
 }
 
-void calculate(double ** matrix, double * results, int len){
+void calculate(double ** matrix, double * results,int len){
     double scaler;
-    cout<<"START"<<endl;
+    //cout<<"START"<<endl;
     for(int i = 0 ; i < len ; i++){
-        cout<<endl<<"Pierwszy for "<<i<<endl<<"Matrix i i : "<<matrix[i][i]<<endl;
-        if(matrix[i][i]!=1){
-            cout<<"scaler";
+        //cout<<endl<<"Pierwszy for "<<i<<endl<<"Matrix i i : "<<matrix[i][i]<<endl;
+        if(matrix[i][i]!=1.0){
+            //cout<<"scaler";
             scaler = matrix[i][i];
-            cout<<scaler<<endl;
+            //cout<<scaler<<endl;
             for(int y = i ; y < len ; y++){
                 matrix[i][y] /= scaler;
             }
@@ -48,12 +50,12 @@ void calculate(double ** matrix, double * results, int len){
             //writeMATRIX(matrix, len);
         }
         for(int j = i + 1  ; j < len ; j++){
-            cout<<endl<<"taki tam for "<<j<<endl;
+            //cout<<endl<<"taki tam for "<<j<<endl;
             scaler = (-1*matrix[j][i])/matrix[i][i];
-            cout<<endl<<"scaler: "<<scaler<<endl;
+            //cout<<endl<<"scaler: "<<scaler<<endl;
 
             for(int y = i ; y < len ; y++){
-                cout<<endl<<"Ostatni for j y = "<<matrix[j][y]<<endl;
+                //cout<<endl<<"Ostatni for j y = "<<matrix[j][y]<<endl;
                 matrix[j][y] = scaler * matrix[i][y] + matrix[j][i];
                 //writeMATRIX(matrix, len);
             }
@@ -61,11 +63,26 @@ void calculate(double ** matrix, double * results, int len){
             //writeMATRIX(matrix, len);
 
         }
-        writeMATRIX(matrix, results, len);
-        cout<< endl;
+        //writeMATRIX(matrix, results, len);
+        //cout<< endl;
     }
-    //----------
+    //---------- znajdowanie rozwiązan
+    writeMATRIX(matrix, results,len);
+    double search;
+    for(int i = len - 2 ; i >= 0 ; i--){
+        search = 0;
+        //cout<<endl<<"startlastfor"<<endl;
+        for(int j = len - 1 ; j > i ; j--){
+            //cout<<endl<<i<<" "<<j<<" "<<matrix[i][j]<<" ";
+            search += matrix[i][j] * results[j];
+            //cout<<search<<endl;
 
+        }
+        //cout<<"last search: "<<search<< " "<< results[i];
+        //cout<<endl;
+        results[i] = results[i] - search;
+        //writeMATRIX(matrix, results, len);
+    }
 
 }
 
@@ -89,10 +106,10 @@ void startApp(){
     double * results = new double[noe];
 
 
-
     randomRESULT(results, noe);
     randomMATRIX(matrix, noe);
     writeMATRIX(matrix, results, noe);
-    calculate(matrix, results,noe);
+    calculate(matrix, results, noe);
+    writeMATRIX(matrix, results, noe);
     finishApp(matrix, results, noe);
 }
